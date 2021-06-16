@@ -35,7 +35,7 @@ export default {
                this.$toast.success(data.message, "Success", { timeout: 3000 });
                this.editing = false;
            })
-           .then(() => this.highlight())
+           .then(() => this.highlight());
        },
 
        payload () {},
