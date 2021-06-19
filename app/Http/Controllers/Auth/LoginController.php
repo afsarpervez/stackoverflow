@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -32,9 +34,42 @@ class LoginController extends Controller
      * Create a new controller instance.
      *
      * @return void
-     */
+     */ 
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    //User.php   use HasApiTokens
+    // auth.php API driver
+    // \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,  was added to KERNEL.PHP
+    //And then inside here we're going to perform the password grand tokens by hitting the oauth token endpoint
+    //Now to hit the oauth/token endpoint and get the token back 
+    //we need to pass in at least 5 things: 
+    //    grant_type,
+    //    client_id,
+    //    client_secret,
+    //    username and password.
+
+        // Client ID: 1
+        // Client secret: Vl5sZ1SXwV98MI9enIGabmLkhlPSpBHAq4pIF7mB
+        // Password grant client created successfully.
+        // Client ID: 2
+        // Client secret: azSeKyZuyYuQNrsjCMEY8LWHRTGBLsWOZJmMYCES
+    public function getToken(Request $request)
+    {
+        $request->request->add([
+            'grant_type' => 'password',
+            'client_id' => 2,
+            'client_secret' => 'azSeKyZuyYuQNrsjCMEY8LWHRTGBLsWOZJmMYCES',
+            'username' => $request->username,
+            'password' => $request->password
+        ]);
+
+        $requestToken = Request::create(env('APP_URL').'/oauth/token', 'post');
+        $response = Route::dispatch($requestToken);
+
+
+        return $response;
     }
 }
