@@ -41,6 +41,10 @@ class RouteServiceProvider extends ServiceProvider
         // Route::bind('question:slug', function ($value) {            
         //     return Question::where('slug', $value)->firstOrFail();
         // });
+
+        Route::bind('slug', function($slug) {
+            return Question::with('user')->where('slug', $slug)->first() ?? abort(404);
+        });
         
         $this->configureRateLimiting();
 
