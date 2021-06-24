@@ -56,20 +56,5 @@ class LoginController extends Controller
         // Password grant client created successfully.
         // Client ID: 2
         // Client secret: azSeKyZuyYuQNrsjCMEY8LWHRTGBLsWOZJmMYCES
-    public function getToken(Request $request)
-    {
-        $request->request->add([
-            'grant_type' => 'password',
-            'client_id' => 2,
-            'client_secret' => 'azSeKyZuyYuQNrsjCMEY8LWHRTGBLsWOZJmMYCES',
-            'username' => $request->username,
-            'password' => $request->password
-        ]);
-
-        $requestToken = Request::create(env('APP_URL').'/oauth/token', 'post');
-        $response = Route::dispatch($requestToken);
-
-
-        return $response;
-    }
+    
 }
