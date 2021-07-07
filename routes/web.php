@@ -18,10 +18,11 @@ use App\Http\Controllers\VoteQuestionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Auth::routes();
+Route::view('/{any}','spa')->where('any', '.*'); 
 Route::get('/', [QuestionsController::class, 'index']);
 
-Auth::routes();
+
 // Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -25,6 +25,7 @@
 import Answer from './Answer.vue';
 import NewAnswer from './NewAnswer.vue';
 import highlight from '../mixins/highlight';
+import EventBus from '../event-bus';
 
 export default {
 	props: ['question'],
@@ -43,6 +44,10 @@ export default {
 		this.fetch(`/questions/${this.questionId}/answers`);
 	},
 
+	// mounted () {
+	// 	alert(this.questionId)
+	// },
+
 	methods: {
 		add (answer) {
 			this.answers.push(answer);
@@ -50,11 +55,17 @@ export default {
 			this.$nextTick(() => {
 				this.highlight(`answer-${answer.id}`);
 			})
+			if (this.count === 1){
+				EventBus.$emit('answers-count-changed', this.count);
+			}
 		},
 
 		remove (index) {
 			this.answers.splice(index, 1);
 			this.count--;
+			if (this.count === 0) {
+				EventBus.$emit('answers-count-changed', this.count);
+			}
 		},
 
 		fetch (endpoint) {
@@ -62,12 +73,12 @@ export default {
 			
 			axios.get(endpoint)
 			.then( ({data}) => {
-				// console.log(res);
+				 console.log(res);
 				this.answerIds = data.data.map(a=>a.id);
 
 				this.answers.push(...data.data);
 				
-				this.nextUrl = data.next_page_url;
+				this.nextUrl = data.links.next;
 			})
 			.then(() => {
 				return this.answerIds.forEach(id => {
