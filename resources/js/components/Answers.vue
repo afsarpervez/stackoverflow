@@ -10,8 +10,8 @@
 																			<hr>
 																			<answer @deleted="remove(index)" v-for="(answer, index) in answers" :answer="answer" :key="answer.id"></answer>                  
 
-							<div class="text-center mt-3" v-if="nextUrl">
-								<button @click.prevent="fetch(nextUrl)" class="btn btn-outline-secondary">Load more answers</button>
+							<div class="text-center mt-3" v-if="theNextUrl">
+								<button @click.prevent="fetch(theNextUrl)" class="btn btn-outline-secondary">Load more answers</button>
 							</div>
 															</div>
 											</div>
@@ -36,7 +36,9 @@ export default {
 			count: this.question.answers_count,
 			answers: [],
 			answerIds: [],
-			nextUrl: null
+			nextUrl: null,
+			excludeAnswers: []
+
 		}
 	},
 
@@ -44,12 +46,9 @@ export default {
 		this.fetch(`/questions/${this.questionId}/answers`);
 	},
 
-	// mounted () {
-	// 	alert(this.questionId)
-	// },
-
 	methods: {
 		add (answer) {
+			this.excludeAnswers.push(answer);
 			this.answers.push(answer);
 			this.count++;
 			this.$nextTick(() => {
@@ -73,7 +72,7 @@ export default {
 			
 			axios.get(endpoint)
 			.then( ({data}) => {
-				 console.log(res);
+				// console.log(res);
 				this.answerIds = data.data.map(a=>a.id);
 
 				this.answers.push(...data.data);
@@ -91,7 +90,15 @@ export default {
 	computed: {
 		title () {
 			return this.count + " " + (this.count>1 ? "answers" : "answer");
+		},
+
+	theNextUrl () {
+		if (this.nextUrl && this.excludeAnswers.length) {
+			return this.nextUrl + 
+				this.excludeAnswers.map(a => '&excludes[]=' + a.id).join('');
 		}
+		return this.nextUrl;
+	}
 	},
 
 	components: {

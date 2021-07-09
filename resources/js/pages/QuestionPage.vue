@@ -1,6 +1,6 @@
 <template>
- <div class="container">
-    <question :question="question" v-if="question.id"></question>
+ <div class="container" v-if="question.id">
+    <question :question="question" ></question>
     <answers :question="question"></answers>
  </div>
 </template>
@@ -22,8 +22,6 @@ export default {
 
  mounted () {
     this.fetchQuestion ();
-   //  alert(this.question)
-   //  console.log(this.question)
  },
 
  methods: {

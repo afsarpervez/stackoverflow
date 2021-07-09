@@ -1,12 +1,11 @@
 <template>
 	<div>
 		<a title="Click to make favorite"
-		:class="classes"
-		@click.prevent="toggle"		
-		>
-		<i class="fas fa-star fa-2x"></i>
-	</a>
-		<span class="favorites-count">{{count}}</span>
+			:class="classes"
+			@click.prevent="toggle">
+			<i class="fas fa-star fa-2x"></i>
+		</a>
+		<span class="favorites-count">{{count}} </span>
 	</div>
 </template>
 
@@ -18,7 +17,7 @@ export default {
 		return {
 			isFavorited: this.question.is_favorited,
 			count: this.question.favorites_count,
-			id: this.question.id
+			id: this.question.id,
 		}
 	},
 
@@ -46,6 +45,7 @@ export default {
 
 				return;
 			}
+			// alert(this.isFavorited)
 			this.isFavorited ? this.destroy() : this.create();
 		},
 

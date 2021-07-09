@@ -7,7 +7,7 @@
 						<div class="d-flex align-items-center">
 							<h2>New Question</h2>
 							<div class="ml-auto">
-								<router-link :to="{name: 'questions'}" class="btn btn-outline-secondary" >Back to all question</router-link>
+								<router-link exact :to="{name: 'questions'}" class="btn btn-outline-secondary" >Back to all question</router-link>
 							</div>
 						</div>
 						
