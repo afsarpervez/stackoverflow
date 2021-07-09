@@ -1,6 +1,6 @@
 <template>
- <div class="container">
-    <question :question="question"></question>
+ <div class="container" v-if="question.id">
+    <question :question="question" ></question>
     <answers :question="question"></answers>
  </div>
 </template>
@@ -12,6 +12,26 @@ import Answers from '../components/Answers.vue';
 export default {
  components: { Question, Answers },
  
- props: ['question']
+ props: ['slug'],
+
+ data () {
+    return {
+       question: {}
+    }
+ },
+
+ mounted () {
+    this.fetchQuestion ();
+ },
+
+ methods: {
+    fetchQuestion () {
+       axios.get(`/questions/${this.slug}`)
+       .then(({data})=> {
+          this.question = data.data
+       })
+       .catch(error => console.log(error))
+    }
+ }
 }
 </script>

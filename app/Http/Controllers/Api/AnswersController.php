@@ -13,7 +13,13 @@ class AnswersController extends Controller
 {
     public function index(Question $question)
     {
-        $answers = $question->answers()->with('user')->simplePaginate(3);
+        $answers = $question->answers()->with('user')
+        ->where(function ($q) {
+            if (request()->has('excludes')) {
+                $q->whereNotIn('id', request()->query('excludes'));
+            }
+        })
+        ->simplePaginate(3);
         return AnswerResource::collection($answers);
     }
     /**
@@ -28,6 +34,8 @@ class AnswersController extends Controller
             'body'=>'required'
         ])+ ['user_id'=>\Auth::id()]);
     
+        if(env('APP_ENV')=='local') sleep(2);
+        
         return response()->json([
             'message' => "Answer has been submited!",
             'answer' => new AnswerResource($answer->load('user'))

@@ -12,27 +12,25 @@
     "devDependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
         "@fortawesome/free-solid-svg-icons": "^5.15.3",
-        "@vue/compiler-sfc": "^3.1.1",
-        "autosize": "^5.0.0",
+        "autosize": "^4.0.2",
         "axios": "^0.21",
         "bootstrap": "^4.3.1",
-        "install": "^0.13.0",
-        "jquery": "^3.2",
-        "laravel-mix": "^6.0.6",
+        "cross-env": "^5.2.1",
+        "jquery": "^3.4.1",
+        "laravel-mix": "^6.0.25",
         "lodash": "^4.17.19",
         "markdown-it": "^8.4.2",
-        "markdown-it-prism": "^2.0.3",
-        "popper.js": "^1.12",
+        "markdown-it-prism": "^2.1.6",
+        "popper.js": "^1.15.0",
+        "postcss": "^8.3.5",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.20.1",
+        "sass": "^1.35.1",
         "sass-loader": "^8.0.0",
-        "typescript": "^4.3.2",
+        "typescript": "^4.3.4",
         "vue": "^2.5.17",
         "vue-izitoast": "^1.2.1",
-        "vue-loader": "^15.9.5",
+        "vue-loader": "^15.9.7",
+        "vue-router": "^3.5.2",
         "vue-template-compiler": "^2.6.10"
-    },
-    "dependencies": {
-        "prismjs": "^1.23.0"
     }
 }

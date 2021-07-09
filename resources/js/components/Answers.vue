@@ -10,8 +10,8 @@
 																			<hr>
 																			<answer @deleted="remove(index)" v-for="(answer, index) in answers" :answer="answer" :key="answer.id"></answer>                  
 
-							<div class="text-center mt-3" v-if="nextUrl">
-								<button @click.prevent="fetch(nextUrl)" class="btn btn-outline-secondary">Load more answers</button>
+							<div class="text-center mt-3" v-if="theNextUrl">
+								<button @click.prevent="fetch(theNextUrl)" class="btn btn-outline-secondary">Load more answers</button>
 							</div>
 															</div>
 											</div>
@@ -25,6 +25,7 @@
 import Answer from './Answer.vue';
 import NewAnswer from './NewAnswer.vue';
 import highlight from '../mixins/highlight';
+import EventBus from '../event-bus';
 
 export default {
 	props: ['question'],
@@ -35,7 +36,9 @@ export default {
 			count: this.question.answers_count,
 			answers: [],
 			answerIds: [],
-			nextUrl: null
+			nextUrl: null,
+			excludeAnswers: []
+
 		}
 	},
 
@@ -45,16 +48,23 @@ export default {
 
 	methods: {
 		add (answer) {
+			this.excludeAnswers.push(answer);
 			this.answers.push(answer);
 			this.count++;
 			this.$nextTick(() => {
 				this.highlight(`answer-${answer.id}`);
 			})
+			if (this.count === 1){
+				EventBus.$emit('answers-count-changed', this.count);
+			}
 		},
 
 		remove (index) {
 			this.answers.splice(index, 1);
 			this.count--;
+			if (this.count === 0) {
+				EventBus.$emit('answers-count-changed', this.count);
+			}
 		},
 
 		fetch (endpoint) {
@@ -67,7 +77,7 @@ export default {
 
 				this.answers.push(...data.data);
 				
-				this.nextUrl = data.next_page_url;
+				this.nextUrl = data.links.next;
 			})
 			.then(() => {
 				return this.answerIds.forEach(id => {
@@ -80,7 +90,15 @@ export default {
 	computed: {
 		title () {
 			return this.count + " " + (this.count>1 ? "answers" : "answer");
+		},
+
+	theNextUrl () {
+		if (this.nextUrl && this.excludeAnswers.length) {
+			return this.nextUrl + 
+				this.excludeAnswers.map(a => '&excludes[]=' + a.id).join('');
 		}
+		return this.nextUrl;
+	}
 	},
 
 	components: {

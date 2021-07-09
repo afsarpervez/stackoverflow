@@ -26,7 +26,7 @@
                         <div class="d-flex align-items-center">
                             <h1>{{ title }}</h1>
                             <div class="ml-auto">
-                                <a href="/questions" class="btn btn-outline-secondary">Back to all Questions</a>
+                                <router-link exact :to="{name: 'questions'}" class="btn btn-outline-secondary" >Back to all question</router-link>
                             </div>
                         </div>                        
                     </div>
@@ -60,6 +60,8 @@
 
 <script>
 import modification from '../mixins/modification';
+import EventBus from '../event-bus';
+
 // import 'prismjs/themes/prism.css';
 
 export default {
@@ -78,7 +80,11 @@ export default {
             beforeEditCache: {}
         }
     },
-
+    mounted () {
+        EventBus.$on('answers-count-changed', (count) => {
+            this.question.answers_count = count;
+        })
+    },
     computed: {
         isInvalid () {
             return this.body.length < 10 || this.title.length < 10;
@@ -119,11 +125,12 @@ export default {
             axios.delete(this.endpoint)
                 .then(({data}) => {
                     this.$toast.success(data.message, "Success", { timeout: 2000 });
+                    this.$router.push({ name: 'questions' });
                 });
 
-                setTimeout(() => {
-                    window.location.href = "/questions";
-                }, 3000);
+                // setTimeout(() => {
+                //     window.location.href = "/questions";
+                // }, 3000);
         }
     }
 }

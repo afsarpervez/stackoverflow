@@ -12,7 +12,10 @@
 								<textarea id="body" class="form-control" required v-model="body" name="body" rows="7"></textarea>
 							</m-editor>
 						</div>
-						<button type="submit" :disabled="isInvalid" class="btn btn-lg btn-outline-primary">Submit</button>
+						<button type="submit" :disabled="isInvalid" class="btn btn-lg btn-outline-primary">
+								<spinner :min-width="59.22" :small="true" v-if="$root.loading"></spinner>
+								<span v-else>Submit</span>
+							</button>
 					</form>
 				</div>
 			</div>
