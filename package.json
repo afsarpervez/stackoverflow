@@ -19,7 +19,7 @@
         "jquery": "^3.4.1",
         "laravel-mix": "^6.0.25",
         "lodash": "^4.17.19",
-        "markdown-it": "^8.4.2",
+        "markdown-it": "^12.3.2",
         "markdown-it-prism": "^2.1.6",
         "popper.js": "^1.15.0",
         "postcss": "^8.3.5",
